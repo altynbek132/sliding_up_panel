@@ -36,6 +36,9 @@ class SlidingUpPanel extends StatefulWidget {
   /// [panel] will be used.
   final Widget Function(ScrollController sc)? panelBuilder;
 
+  /// wrap returned widgets in Positioned
+  final List<Widget> Function(BuildContext context)? backOfPanelBuilder;
+
   /// The Widget displayed overtop the [panel] when collapsed.
   /// This fades out as the panel is opened.
   final Widget? collapsed;
@@ -163,6 +166,7 @@ class SlidingUpPanel extends StatefulWidget {
       {Key? key,
       this.panel,
       this.panelBuilder,
+      this.backOfPanelBuilder,
       this.body,
       this.collapsed,
       this.minHeight = 100.0,
@@ -303,7 +307,7 @@ class _SlidingUpPanelState extends State<SlidingUpPanel>
                       );
                     }),
               ),
-
+        ...?widget.backOfPanelBuilder?.call(context),
         //the actual sliding part
         !_isPanelVisible
             ? Container()
